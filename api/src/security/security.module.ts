@@ -1,10 +1,21 @@
 import { Module } from '@nestjs/common';
-import {TypeOrmModule} from '@nestjs/typeorm';
-import {Token, Credential} from './model';
+import {InjectRepository, TypeOrmModule} from '@nestjs/typeorm';
 import { TokenService } from './jwt/token.service';
+import { SecurityService } from './service/security.service';
+
+import { SecurityController } from './security.controller';
+import {Token, Credential} from './model';
+import {JwtModule} from '@nestjs/jwt';
+import {ConfigKey, configManager} from '@common/config';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Credential, Token])],
-    providers: [TokenService]
+    imports: [JwtModule.register({
+        global: true,
+        secret: configManager.getValue(ConfigKey.JWT_TOKEN_SECRET),
+        signOptions: {expiresIn: configManager.getValue(ConfigKey.JWT_TOKEN_EXPIRE_IN)},
+    }),TypeOrmModule.forFeature([Credential, Token])],
+    exports: [SecurityService],
+    providers: [TokenService, SecurityService],
+    controllers: [SecurityController]
 })
 export class SecurityModule {}
