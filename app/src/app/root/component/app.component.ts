@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {SignInPageComponent} from '@security';
+import {ApiService} from '@api';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,10 @@ import {SignInPageComponent} from '@security';
 })
 export class AppComponent {
   title = 'app';
+  private readonly api: ApiService = inject(ApiService);
+  ngOnInit(): void {
+    this.api.get('').subscribe((data) => {
+      console.log('my data', data);
+    })
+  }
 }

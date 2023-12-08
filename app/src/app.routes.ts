@@ -1,23 +1,24 @@
 import { Routes } from '@angular/router';
 import {DashboardGuard} from './app/dashboard/dashboard.guard';
+import {AppNode} from './app/shared/routes/enum/node.enum';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'account',
+    redirectTo: AppNode.PUBLIC,
     pathMatch: 'full'
   },
   {
-    path: 'account',
+    path: AppNode.PUBLIC,
     loadChildren: () => import('./app/security/security.routes').then(r => r.securityRoutes)
   },
   {
-    path: 'dashboard',
+    path: AppNode.AUTHENTICATED,
     canActivate: [DashboardGuard()],
     loadChildren: () => import('./app/dashboard/dashboard.routes').then(r => r.dashboardRoutes)
   },
   {
-    path: '**',
+    path: AppNode.FALL_BACK,
     loadComponent: () => import('./app/shared/routes/global-fall-back-page/global-fall-back-page.component').then(r => r.GlobalFallBackPageComponent)
   }
 ]
