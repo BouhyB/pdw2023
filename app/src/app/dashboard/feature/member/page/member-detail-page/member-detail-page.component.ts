@@ -1,7 +1,6 @@
-import {Component, computed, effect, inject, Input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {delay, of, tap} from 'rxjs';
-import {MemberService} from '../../service/member.service';
+import {Component, computed, effect, Input, Signal, signal, WritableSignal} from '@angular/core';
 
 @Component({
   selector: 'app-member-detail-page',
