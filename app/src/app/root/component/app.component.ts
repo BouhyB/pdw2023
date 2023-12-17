@@ -14,9 +14,9 @@ import {ApiService} from '@api';
 export class AppComponent {
   title = 'app';
   private readonly api: ApiService = inject(ApiService);
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.api.get('').subscribe((data) => {
       console.log('my data', data);
     })
-  }
+  }*/
 }

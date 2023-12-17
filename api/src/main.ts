@@ -9,3 +9,4 @@ async function bootstrap() {
   swaggerConfiguration.config(app);
   await app.listen(configManager.getValue(ConfigKey.APP_PORT));
 }
+bootstrap();
