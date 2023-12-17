@@ -1,0 +1,9 @@
+<div class="wrapper">
+  <div class="form" [formGroup]="formGroup">
+    <label>Username</label>
+    <input type="username" formControlName ='username' placeholder="Entrez l'identifiant" />
+    <label>Password</label>
+    <input type="password" formControlName='password' placeholder="Entrez un password" />
+    <button (click)="save()">Connexion</button>
+  </div>
+</div>

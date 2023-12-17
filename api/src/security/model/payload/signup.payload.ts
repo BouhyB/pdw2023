@@ -5,5 +5,7 @@ export class SignupPayload {
     @ApiProperty()
     password: string
     @ApiProperty()
+    passwordVerif: string
+    @ApiProperty()
     mail: string
 }
