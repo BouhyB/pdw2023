@@ -1,7 +1,8 @@
-import {Payload} from '../../../../shared/core/model/type';
+import {Payload} from '@shared';
 
 export interface SignUpPayload extends Payload{
   mail: string
   username: string
   password: string
+  passwordVerify: string
 }

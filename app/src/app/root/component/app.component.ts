@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {SignInPageComponent} from '@security';
@@ -11,12 +11,13 @@ import {ApiService} from '@api';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'app';
   private readonly api: ApiService = inject(ApiService);
-  /*ngOnInit(): void {
+  ngOnInit(): void {
     this.api.get('').subscribe((data) => {
       console.log('my data', data);
     })
-  }*/
+  }
+
 }

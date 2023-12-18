@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import {DashboardGuard} from './app/dashboard/dashboard.guard';
-import {AppNode} from './app/shared/routes/enum/node.enum';
+import {AppNode} from '@shared';
 
 export const routes: Routes = [
   {

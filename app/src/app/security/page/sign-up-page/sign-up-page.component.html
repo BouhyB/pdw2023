@@ -1,13 +1,15 @@
+<!--<app-sign-in-up-form  [config]="config"></app-sign-in-up-form>-->
 <div class="wrapper">
   <div class="form" [formGroup]="formGroup">
     <label>Email</label>
-    <input type="email" formControlName ='email' placeholder="Entrez un identifiant" />
+    <input type="mail" formControlName ='mail' placeholder="Entrez un identifiant" />
     <label>Username</label>
     <input type="username" formControlName='username' placeholder="Entrez un username" />
     <label>Password</label>
     <input type="password" formControlName='password' placeholder="Entrez un password" />
     <label>PasswordVerify</label>
-    <input type="passwordVerify" formControlName='passwordVerify' placeholder="Entrez à nouveau le password" />
+    <input type="password" formControlName='passwordVerify' placeholder="Entrez à nouveau le password" />
     <button (click)="save()">S'enregistrer</button>
   </div>
 </div>
+
