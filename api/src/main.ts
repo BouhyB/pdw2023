@@ -1,12 +1,27 @@
-import {NestFactory} from '@nestjs/core';
-import {AppModule} from './app.module';
-import {ConfigKey, configManager, HttpExceptionFilter} from '@common/config';
-import {swaggerConfiguration} from '@common/documentation';
+import { NestFactory } from '@nestjs/core';
+import { ConfigKey, configManager, HttpExceptionFilter } from '@common/config';
+import { swaggerConfiguration } from '@common/documentation';
+import { Logger, ValidationError, ValidationPipe } from '@nestjs/common';
+/*import { ApiInterceptor } from '@common/api/api.interceptor';
+import { ValidationException } from '@common/api';*/
+import {AppModule} from "./app.module";
 
-async function bootstrap() {
+
+
+const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.setGlobalPrefix(configManager.getValue(ConfigKey.APP_BASE_URL));
   swaggerConfiguration.config(app);
-  await app.listen(configManager.getValue(ConfigKey.APP_PORT));
-}
-bootstrap();
+  /*app.useGlobalInterceptors(new ApiInterceptor());
+  app.useGlobalPipes(new ValidationPipe({
+    exceptionFactory: (validationErrors: ValidationError[] = []) => new ValidationException(validationErrors)
+  }));*/
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors();
+  await app.listen(parseInt(configManager.getValue(ConfigKey.APP_PORT), 10));
+};
+
+bootstrap().then(() => {
+  const logger = new Logger('Main Logger');
+  logger.log('Server is started !!');
+});
