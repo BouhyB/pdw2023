@@ -1,1 +1,1 @@
-export * from './member/index';
+export * from './profile/index';

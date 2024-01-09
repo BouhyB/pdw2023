@@ -1,0 +1,43 @@
+.container {  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "Button-section Publication ."
+    "Button-section Publication ."
+    ". Publication .";
+}
+
+.Button-section {  display: grid;
+  grid-auto-columns: 250px;
+  gap: 10px 10px;
+  grid-auto-flow: row;
+  justify-items: center;
+  justify-self: center;
+  align-self: center;
+  grid-area: Button-section;
+  width: 250px;
+  height: 500px;
+  background: gray;
+}
+
+.Publication {  display: grid;
+  grid-auto-columns: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  justify-self: stretch;
+  align-self: stretch;
+  grid-area: Publication;
+  width: 550px;
+  background: gray;
+}
+
+
+html, body , .container {
+  height: 100%;
+  margin: 0;
+}
+button {
+  display: block;
+  margin: 100px;
+}

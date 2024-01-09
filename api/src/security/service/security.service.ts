@@ -26,6 +26,7 @@ export class SecurityService {
         }
         throw new UserNotFoundException();
     }
+
     async signIn(payload: SignInPayload,isAdmin:boolean): Promise<Token | null> {
         let result = await this.repository.findOneBy({username: payload.username,
             isAdmin:isAdmin});

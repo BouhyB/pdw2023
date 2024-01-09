@@ -12,9 +12,9 @@ export const dashboardRoutes: Routes = [
           .then(c => c.DashboardHomePageComponent),
       },
       {
-        path: 'member',
-        loadChildren: () => import('./feature/member/member.routes')
-          .then(r => r.memberRoutes)
+        path: 'profile',
+        loadChildren: () => import('./feature/profile/profile.routes')
+          .then(r => r.profileRoutes)
       }
     ]
   }

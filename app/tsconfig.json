@@ -2,13 +2,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
     "paths": {
       "@security": ["./app/security/index.ts"],
       "@root": ["./app/root/index.ts"],
       "@dashboard": ["./app/dashboard/index.ts"],
       "@shared": ["./app/shared/index.ts"],
-      "@member-feature": ["./app/dashboard/feature/member/index.ts"],
       "@api": ["./app/shared/api/index.ts"],
       "@env": ["./environments/index.ts"]
     },

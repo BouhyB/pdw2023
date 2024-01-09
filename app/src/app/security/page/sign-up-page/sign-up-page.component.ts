@@ -32,6 +32,7 @@ export class SignUpPageComponent {
     console.log('mon payload', this.formGroup.value)
     if(this.formGroup.valid){
       this.authService.signUp(payload).subscribe();
+
     }else{
       if(payload.mail.length == 0) {
         alert('Mail vide')

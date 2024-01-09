@@ -15,6 +15,7 @@ export const securityRoutes: Routes = [
     path: 'signup',
     loadComponent: () =>
       import('./page/sign-up-page/sign-up-page.component').then(c => c.SignUpPageComponent)
+
   },
   {
     path: '**',

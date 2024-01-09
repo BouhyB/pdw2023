@@ -31,13 +31,14 @@ export class SignInPageComponent {
   save():void{
     const payload : SignInPayload = {...this.formGroup.value}
     console.log('mon payload', this.formGroup.value)
-    if(this.formGroup.valid){
+    if (this.formGroup.valid) {
       this.authService.signIn(payload).subscribe();
-    }else{
-      if(payload.username.length == 0) {
+
+    } else {
+      if (payload.username.length == 0) {
         alert('Username vide')
       }
-      if(payload.password.length == 0){
+      if (payload.password.length == 0) {
         alert('Password vide')
       }
     }

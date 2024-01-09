@@ -7,4 +7,7 @@ export enum ApiCodeResponse{
     CREDENTIAL_DELETE_ERROR= 'api.security.error.credential-delete',
     USER_ALREADY_EXIST= 'api.security.error.user-exist',
     TOKEN_GEN_ERROR= 'api.security.error.token-generation ',
+    PAYLOAD_IS_NOT_VALID = 'api.security.error.payload-not-valid',
+    PAYLOAD_PARAM_IS_MISSING = 'api.security.error.payload-param-missing',
+    COMMON_SUCCESS = 'api.success',
 }

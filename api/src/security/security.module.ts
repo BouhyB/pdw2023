@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import {InjectRepository, TypeOrmModule} from '@nestjs/typeorm';
 import { TokenService } from './jwt/token.service';
-import { SecurityService } from './service/security.service';
+import { SecurityService } from './service';
 
 import { SecurityController } from './security.controller';
 import {Token, Credential} from './model';
