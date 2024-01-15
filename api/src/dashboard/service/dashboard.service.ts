@@ -23,11 +23,11 @@ export class DashboardService {
         return await this.profileService.detail(id);
     }
 
-    async getPublications(id: string) : Promise<Publication[]>{
-        return await this.publicationService.getPublications(id);
+    async getPublications() : Promise<Publication[]>{
+        return await this.publicationService.getAll();
     }
 
-    async getCommentsForAPublication(idProfile: string, idPublication: string) : Promise<Comment[]>{
+    /*async getCommentsForAPublication(idProfile: string, idPublication: string) : Promise<Comment[]>{
         return await this.commentService.getComments(idProfile, idPublication);
     }
     async getLikeForAPublication(idProfile: string, idPublication: string) : Promise<IntegerType>{
@@ -35,6 +35,6 @@ export class DashboardService {
     }
     async getLikeForAComment(idProfile: string, idComment: string) : Promise<IntegerType>{
         return await this.likeService.getLikes(idProfile, idComment);
-    }
+    }*/
 
 }

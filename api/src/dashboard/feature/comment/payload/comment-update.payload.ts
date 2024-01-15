@@ -1,4 +1,6 @@
 import {IsDate, IsNotEmpty, IsOptional, IsString, Length} from 'class-validator';
+import {Publication} from '../../publication';
+import {Credential} from '../../../../security/model';
 
 export class CommentUpdatePayload{
 
@@ -14,10 +16,8 @@ export class CommentUpdatePayload{
     content : string;
 
     @IsNotEmpty()
-    @Length(26, 26)
-    credential_id: string;
+    credential: Credential;
 
     @IsNotEmpty()
-    @Length(26, 26)
-    publication_id : string
+    publication : Publication
 }

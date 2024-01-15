@@ -1,6 +1,7 @@
 import {Column} from 'typeorm';
 import {TypePublicationEnum} from '../enum/type-publication.enum';
 import {IsDate, IsNotEmpty, IsOptional, IsString, Length} from 'class-validator';
+import {Credential} from '../../../../../security/model';
 
 export class PublicationCreatePayload {
 
@@ -14,5 +15,6 @@ export class PublicationCreatePayload {
     @IsOptional()
     type : TypePublicationEnum;
     @IsNotEmpty()
-    credential_id : string;
+    @Length(26, 26)
+    credential : Credential;
 }

@@ -1,5 +1,6 @@
 import {IsDate, IsNotEmpty, IsOptional, IsString, Length} from 'class-validator';
 import {TypePublicationEnum} from '../enum/type-publication.enum';
+import {Credential} from '../../../../../security/model';
 
 export class PublicationUpdatePayload {
 
@@ -17,6 +18,6 @@ export class PublicationUpdatePayload {
     type : TypePublicationEnum;
     @IsNotEmpty()
     @Length(26, 26)
-    credential_id : string;
+    credential : Credential;
 
 }

@@ -4,12 +4,13 @@ import {RefreshTokenPayload, SignInPayload, SignupPayload} from './model';
 import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
 import {Public, User} from '@common/config/metadata';
 import {Credential} from './model';
+import {ProfileCreatePayload, ProfileService} from '../dashboard/feature/profile';
 
 @ApiBearerAuth('access-token')
 @ApiTags('Account')
 @Controller('account')
 export class SecurityController {
-    constructor(private readonly service: SecurityService) {
+    constructor(private readonly service: SecurityService, private readonly profileServ : ProfileService) {
     }
     @Public()
     @Post('signin')
@@ -24,6 +25,9 @@ export class SecurityController {
     @Public()
     @Post('signup')
     public signUp(@Body() payload: SignupPayload) {
+        let payloadProfile = new ProfileCreatePayload();
+        payloadProfile.mail = payload.mail;
+        this.profileServ.create(payloadProfile).then();
         return this.service.signup(payload);
     }
     @Public()

@@ -1,10 +1,11 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {IsNotEmpty, IsOptional, Length} from 'class-validator';
+import {Credential} from '../../../../../security/model';
 
 export class ProfileUpdatePayload {
     @IsNotEmpty()
     @Length(26, 26)
-    member_id: string;
+    profile_id: string;
     @ApiProperty()
     @IsOptional()
     picture : string;
@@ -27,4 +28,7 @@ export class ProfileUpdatePayload {
     @IsNotEmpty()
     @Length(1, 50)
     mail : string;
+    @ApiProperty()
+    @IsNotEmpty()
+    credential : Credential;
 }
