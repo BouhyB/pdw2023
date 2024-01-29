@@ -28,7 +28,4 @@ export class ProfileUpdatePayload {
     @IsNotEmpty()
     @Length(1, 50)
     mail : string;
-    @ApiProperty()
-    @IsNotEmpty()
-    credential : Credential;
 }

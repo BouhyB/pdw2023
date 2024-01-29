@@ -25,9 +25,6 @@ export class SecurityController {
     @Public()
     @Post('signup')
     public signUp(@Body() payload: SignupPayload) {
-        let payloadProfile = new ProfileCreatePayload();
-        payloadProfile.mail = payload.mail;
-        this.profileServ.create(payloadProfile).then();
         return this.service.signup(payload);
     }
     @Public()

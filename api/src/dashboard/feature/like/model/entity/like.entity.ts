@@ -1,26 +1,24 @@
 import {Column, Entity, JoinColumn, OneToOne, PrimaryColumn} from 'typeorm';
 import {ulid} from 'ulid';
 import {Credential} from '../../../../../security/model';
-import {Publication} from '../../../publication/model/entity/publication.entity';
-import {Comment} from '../../../comment/model/entity/comment.entity';
+import {Publication} from '../../../publication';
+import {Comment} from '../../../comment';
+import {BaseEntity} from '@common/entity/base.entity';
 
 @Entity()
-export class Like{
+export class Like extends BaseEntity{
     @PrimaryColumn('varchar', { length:26, default: () => `'${ulid()}'` })
     like_id : string;
 
-    @Column({nullable: false, unique: false})
-    date_like : Date;
-
     @OneToOne(()=>Credential, {eager:true})
     @JoinColumn({name : 'credential_id'})
-    credential: Credential
+    credential_id: string
 
     @OneToOne(()=>Publication, {eager:true})
     @JoinColumn({name : 'publication_id'})
-    publication : Publication
+    publication_id : string
 
     @OneToOne(()=>Comment, {eager:true})
     @JoinColumn({name : 'comment_id'})
-    comment : Comment
+    comment_id : string
 }

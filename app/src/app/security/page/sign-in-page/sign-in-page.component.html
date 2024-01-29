@@ -1,12 +1,13 @@
 <!--<app-sign-in-up-form [config]="config"></app-sign-in-up-form>-->
 
 <div class="wrapper">
+  <button (click)="GoToSignUp()">S'inscrire</button>
   <div class="form" [formGroup]="formGroup">
     <label>Username</label>
     <input type="username" formControlName ='username' placeholder="Entrez l'identifiant" />
     <label>Password</label>
     <input type="password" formControlName='password' placeholder="Entrez un password" />
-    <button (click)="save()">Connexion</button>
+    <button (click)="login()">Connexion</button>
   </div>
 </div>
 

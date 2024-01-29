@@ -10,6 +10,7 @@ import {
     PublicationListException, PublicationNotFoundException,
     PublicationUpdateException
 } from '../../../dashboard.exception';
+import {Credential} from '../../../../security/model';
 
 @Injectable()
 export class PublicationService{
@@ -17,16 +18,16 @@ export class PublicationService{
     constructor(@InjectRepository(Publication) private readonly repository: Repository<Publication>) {
     }
 
-    async create(payload: PublicationCreatePayload): Promise<Publication> {
+    async create(payload: PublicationCreatePayload, user: Credential): Promise<Publication> {
         try {
             return await this.repository.save(Builder<Publication>()
                 .content(payload.content)
                 .type(payload.type)
-                .date_publication(payload.date_publication)
-                .credential(payload.credential)
+                .credential(user)
                 .build()
             );
         } catch (e) {
+            console.log(e);
             throw new PublicationCreateException();
         }
     }
@@ -58,8 +59,6 @@ export class PublicationService{
             detail.publication_id = payload.publication_id
             detail.content = payload.content
             detail.type = payload.type
-            detail.date_publication = payload.date_publication
-            detail.credential = payload.credential
             return await this.repository.save(detail);
         } catch (e) {
             throw new PublicationUpdateException();

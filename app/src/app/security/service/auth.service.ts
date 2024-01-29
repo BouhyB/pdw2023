@@ -11,33 +11,19 @@ import {DashboardGuard} from '../../dashboard/dashboard.guard';
   providedIn: 'root'
 })
 export class AuthService {
-  /*private readonly api:ApiService = inject(ApiService);
-  private isAuthenticated: boolean = false;
-
-  public signIn(payload: SignInPayload): Observable<any>{
-    console.log('signin');
-    this.isAuthenticated = true;
-    return this.api.post(ApiURI.SIGN_IN,payload);
-  }
-  public signUp(payload: SignUpPayload): Observable<any>{
-    console.log('signup');
-    return this.api.post(ApiURI.SIGN_UP, payload);
-  }*/
   private readonly api: ApiService = inject(ApiService);
   private readonly tokenService: TokenService = inject(TokenService);
-  //private readonly accountUtils: AccountUtilsService = inject(AccountUtilsService);
   private readonly router: Router = inject(Router);
- // account$: WritableSignal<Account> = signal(this.accountUtils.getEmpty());
 
   constructor() {
     effect(() => this.handleAuthenticatedChange(this.tokenService.token()));
-    //effect(() => this.handleChangeAccountTheme(this.account$()));
   }
   signIn(payload: SignInPayload): Observable<ApiResponse> {
     return this.api.post(ApiURI.SIGN_IN, payload).pipe(
       tap((response: ApiResponse) => {
         //if success then goToDashboard and save token
         if (response.result) {
+          this.logOut()
           this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then()
           this.tokenService.setToken({...response.data, isEmpty: false});
         }
@@ -49,8 +35,7 @@ export class AuthService {
       tap((response: ApiResponse) => {
         //if success then goToDashboard and save token
         if (response.result) {
-          //this.router.
-          this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then()
+          this.router.navigate([AppNode.SIGN_IN]).then()
           this.tokenService.setToken({...response.data, isEmpty: false});
         }
       })
@@ -63,8 +48,6 @@ export class AuthService {
     this.api.get(ApiURI.ME)
       .pipe(tap((response: ApiResponse) => {
         if (response.result) {
-          //this.account$.set(this.accountUtils.fromDTO(response.data));
-          //http://localhost:4200/landing/01HGR2MZ0WE5QS7P8W14ARP6QR
           if (!window.location.pathname.startsWith('/' + AppNode.REDIRECT_TO_AUTHENTICATED) && !window.location.pathname.startsWith('/landing')) {
             this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then();
           }
@@ -74,12 +57,25 @@ export class AuthService {
       }))
       .subscribe();
   }
+
+  getCredentialsId(): string{
+
+    return "null";
+  }
   private handleAuthenticatedChange(token: Token): void {
     if (!token.isEmpty) {
       this.me();
     } else {
       this.router.navigate([AppNode.REDIRECT_TO_PUBLIC]).then();
     }
+  }
+
+  GoToSignUp(){
+    this.router.navigate([AppNode.PUBLIC+'/'+AppNode.SIGN_UP]).then();
+  }
+
+  GoToSignIn(){
+    this.router.navigate([AppNode.PUBLIC+'/'+AppNode.SIGN_IN]).then();
   }
 
 }

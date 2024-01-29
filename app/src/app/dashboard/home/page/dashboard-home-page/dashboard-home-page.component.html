@@ -1,8 +1,27 @@
-<div class="container">
+<div *ngIf=" publications$ | async as publications " class="container">
   <div class="Button-section">
     <button (click) = "Home()">Home</button>
     <button (click) = "MyProfile()">Mon profil</button>
-    <button>Paramètres</button>
+    <button (click) = "LogOut()">Se déconnecter</button>
   </div>
-  <div class="Publication"></div>
+  <div *ngIf=" comments$ | async as comments" class="Publication">
+    <div class="form" [formGroup]="formGroupPublish">
+      <label>Contenu</label>
+      <input type="myContent" formControlName ='myContent' placeholder="Entrez votre texte" />
+      <button (click)="publish()">Publier</button>
+    </div>
+    <div *ngFor="let publication of publications">
+      {{ publication.content }}
+      <div class="form" [formGroup]="formGroupComment">
+        <input type="myComment" formControlName ='myComment' placeholder="Entrez votre Commentaire" />
+        <button (click)="comment(publication)">Commenter</button>
+      </div>
+      <div *ngFor="let comment of comments" class="Commentaire">
+        <div *ngIf="comment.publication.publication_id == publication.publication_id">
+          {{ comment.content }}
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

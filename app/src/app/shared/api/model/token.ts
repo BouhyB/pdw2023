@@ -1,4 +1,4 @@
-import {IsEmpty} from '../../core/model/type';
+import {IsEmpty} from '../../core';
 
 export interface Token extends IsEmpty{
   token: string;

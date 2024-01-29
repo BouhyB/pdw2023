@@ -19,13 +19,7 @@ export class DashboardService {
     ) {
     }
 
-    async detail(id: string): Promise<Profile> {
-        return await this.profileService.detail(id);
-    }
 
-    async getPublications() : Promise<Publication[]>{
-        return await this.publicationService.getAll();
-    }
 
     /*async getCommentsForAPublication(idProfile: string, idPublication: string) : Promise<Comment[]>{
         return await this.commentService.getComments(idProfile, idPublication);

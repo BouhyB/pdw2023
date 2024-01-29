@@ -29,10 +29,8 @@ export class SignUpPageComponent {
 
   save():void{
     const payload : SignUpPayload = {...this.formGroup.value}
-    console.log('mon payload', this.formGroup.value)
     if(this.formGroup.valid){
       this.authService.signUp(payload).subscribe();
-
     }else{
       if(payload.mail.length == 0) {
         alert('Mail vide')
@@ -48,6 +46,10 @@ export class SignUpPageComponent {
 
   private verifyPassword(){
     //let password:string = this.formGroup.value.
+  }
+
+  GoToSignIn(){
+    this.authService.GoToSignIn();
   }
 
 }

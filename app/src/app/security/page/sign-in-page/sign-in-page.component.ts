@@ -28,12 +28,10 @@ export class SignInPageComponent {
   )
 
 
-  save():void{
+  login():void{
     const payload : SignInPayload = {...this.formGroup.value}
-    console.log('mon payload', this.formGroup.value)
     if (this.formGroup.valid) {
       this.authService.signIn(payload).subscribe();
-
     } else {
       if (payload.username.length == 0) {
         alert('Username vide')
@@ -42,5 +40,9 @@ export class SignInPageComponent {
         alert('Password vide')
       }
     }
+  }
+
+  GoToSignUp(){
+    this.authService.GoToSignUp();
   }
 }

@@ -13,18 +13,19 @@ import {
     CommentListException,
     CommentNotFoundException, CommentUpdateException
 } from '../../../dashboard.exception';
+import {Credential} from '../../../../security/model';
 
 @Injectable()
 export class CommentService{
     constructor(@InjectRepository(Comment) private readonly repository: Repository<Comment>) {
     }
 
-    async create(payload: CommentCreatePayload): Promise<Comment> {
+    async create(payload: CommentCreatePayload, user: Credential): Promise<Comment> {
         try {
             return await this.repository.save(Builder<Comment>()
-                .date_comment(payload.date_comment)
                 .content(payload.content)
-                .credential(payload.credential)
+                .credential(user)
+                .publication(payload.publication)
                 .build()
             );
         } catch (e) {
@@ -46,7 +47,7 @@ export class CommentService{
         }
         throw new CommentNotFoundException();
     }
-    async getAll(): Promise<Comment[]> {
+    async getAllCommentsForAPublication(): Promise<Comment[]> {
         try {
             return await this.repository.find();
         } catch (e) {
@@ -57,10 +58,8 @@ export class CommentService{
         try {
             let detail = await this.detail(payload.comment_id);
             detail.comment_id = payload.comment_id
-            detail.date_comment = payload.date_comment
             detail.content = payload.content
-            detail.credential = payload.credential
-            detail.publication = payload.publication
+            //detail.publication_id = payload.publication_id
             return await this.repository.save(detail);
         } catch (e) {
             throw new CommentUpdateException();

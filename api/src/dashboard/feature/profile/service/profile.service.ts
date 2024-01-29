@@ -12,12 +12,13 @@ import {
     ProfileNotFoundException,
     ProfileUpdateException
 } from '../../../dashboard.exception';
+import {Credential} from '../../../../security/model';
 
 @Injectable()
 export class ProfileService{
     constructor(@InjectRepository(Profile) private readonly repository: Repository<Profile>) {
     }
-    async create(payload: ProfileCreatePayload): Promise<Profile> {
+    async create(payload: ProfileCreatePayload, user: Credential): Promise<Profile> {
         try {
             return await this.repository.save(Builder<Profile>()
                 .firstname(payload.firstname)
@@ -26,23 +27,23 @@ export class ProfileService{
                 .description(payload.description)
                 .status(payload.status)
                 .picture(payload.picture)
-                .credential(payload.credential)
+                .credential(user)
                 .build()
             );
         } catch (e) {
             throw new ProfileCreateException();
         }
     }
-    async delete(id: string): Promise<void> {
+    async delete(user: Credential): Promise<void> {
         try {
-            const detail = await this.detail(id);
+            const detail = await this.detail(user);
             await this.repository.remove(detail);
         } catch (e) {
             throw new ProfileDeleteException();
         }
     }
-    async detail(id: string): Promise<Profile> {
-        const result = await this.repository.findOneBy({profile_id: id});
+    async detail(user : Credential): Promise<Profile> {
+        const result = await this.repository.findOneBy({credential : user});
         if (!(isNil(result))) {
             return result;
         }
@@ -55,9 +56,9 @@ export class ProfileService{
             throw new ProfileListException();
         }
     }
-    async update(payload: ProfileUpdatePayload): Promise<Profile> {
+    async update(payload: ProfileUpdatePayload, user: Credential): Promise<Profile> {
         try {
-            let detail = await this.detail(payload.profile_id);
+            let detail = await this.detail(user);
             detail.profile_id = payload.profile_id
             detail.firstname = payload.firstname;
             detail.lastname = payload.lastname;
@@ -65,7 +66,6 @@ export class ProfileService{
             detail.status = payload.status
             detail.description = payload.description
             detail.picture = payload.picture
-            detail.credential = payload.credential
             return await this.repository.save(detail);
         } catch (e) {
             throw new ProfileUpdateException();

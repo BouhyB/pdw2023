@@ -30,6 +30,12 @@
   grid-area: Publication;
   width: 550px;
   background: gray;
+  .form{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
 }
 
 

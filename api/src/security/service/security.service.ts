@@ -12,10 +12,12 @@ import {
 import {Credential, RefreshTokenPayload, SignInPayload, SignupPayload, Token} from '../model';
 import {comparePassword, encryptPassword} from '../utils';
 import {Builder} from 'builder-pattern';
+import {Profile, ProfileCreatePayload, ProfileService} from '../../dashboard/feature/profile';
 
 @Injectable()
 export class SecurityService {
     constructor(@InjectRepository(Credential) private readonly repository: Repository<Credential>,
+                private readonly profileService : ProfileService,
                 private readonly tokenService: TokenService) {
     }
 
@@ -40,19 +42,32 @@ export class SecurityService {
     async signup(payload: SignupPayload): Promise<Credential | null> {
         const result: Credential | null = await this.repository.findOneBy({username:
             payload.username});
+
         if (!isNil(result)) {
             throw new UserAlreadyExistException();
         }
         try {
             const encryptedPassword = await encryptPassword(payload.password) ;
-            return this.repository.save(Builder<Credential>()
+            const newCredential = await this.repository.save(Builder<Credential>()
                 .username(payload.username)
                 .password(encryptedPassword)
                 .mail(payload.mail)
                 .build());
+
+            await this.CreateProfile(payload);
+            //await this.signIn(payload, false);
+            return newCredential;
         } catch (e) {
             throw new SignupException();
         }
+    }
+
+    async CreateProfile(payload: SignupPayload) : Promise<Profile | null>{
+        let user = await this.repository.findOneBy({username:
+            payload.username});
+        let payloadProfile : ProfileCreatePayload = new ProfileCreatePayload();
+        payloadProfile.mail = user.mail;
+        return this.profileService.create(payloadProfile, user);
     }
 
     async refresh(payload: RefreshTokenPayload): Promise<Token | null> {
