@@ -14,6 +14,7 @@ import {Like, LikeService} from './feature/like';
 import {PublicationController} from './feature/publication/publication.controller';
 import {CommentController} from './feature/comment/comment.controller';
 import {ProfileController} from './feature/profile/profile.controller';
+import {LikeController} from './feature/like/like.controller';
 
 
 @Module({
@@ -24,6 +25,6 @@ import {ProfileController} from './feature/profile/profile.controller';
     }),TypeOrmModule.forFeature([Credential, Token, Profile, Publication, Like, Comment])],
     exports: [DashboardService],
     providers: [TokenService, DashboardService, ProfileService, PublicationService, CommentService, LikeService],
-    controllers: [DashboardController, PublicationController, CommentController, ProfileController]
+    controllers: [DashboardController, PublicationController, CommentController, ProfileController, LikeController]
 })
 export class DashboardModule {}

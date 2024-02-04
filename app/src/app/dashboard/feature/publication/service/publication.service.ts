@@ -17,6 +17,7 @@ export class PublicationService {
     return this.api.post(ApiURI.PUBLISH, payload).pipe(
       tap((response: ApiResponse) => {
         if (response.result) {
+          this.router.navigate([AppNode.FALL_BACK]).then();
           this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then();
         }
 
@@ -27,11 +28,36 @@ export class PublicationService {
   getPublications() : any{
     return this.api.get(ApiURI.LIST_PUBLICATION).pipe(
       map((response : ApiResponse)=> {
-        this.router.navigate([AppNode.FALL_BACK]).then();
         this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then();
         return response.data
       })
     )
   }
 
+  getPublicationNumber() {
+    return this.api.get(ApiURI.PUBLICATION_NUMBER).pipe(
+      map((response : ApiResponse)=> {
+        return response.data
+      })
+    )
+  }
+
+  getLastPublication() {
+    return this.api.get(ApiURI.LAST_PUBLICATION).pipe(
+    map((response : ApiResponse)=> {
+      return response.data
+    })
+  )
+  }
+
+  delete(publication_id: string) {
+    return this.api.delete(ApiURI.DELETE_PUBLICATION, publication_id).pipe(
+      tap((response: ApiResponse) => {
+        if (response.result) {
+          this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then();
+        }
+
+      })
+    );
+  }
 }

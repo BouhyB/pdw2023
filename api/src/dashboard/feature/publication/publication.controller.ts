@@ -33,4 +33,14 @@ export class PublicationController {
         return this.service.update(payload);
     }
 
+    @Get('user-publications')
+    public getUserPublication(@User() user: Credential){
+        return this.service.getUserPublications(user);
+    }
+
+    @Get('last-publication')
+    public getLastPublication(){
+        return this.service.getDateLastPublication();
+    }
+
 }

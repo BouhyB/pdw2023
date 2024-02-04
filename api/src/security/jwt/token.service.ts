@@ -6,6 +6,7 @@ import {JwtService} from '@nestjs/jwt';
 import {ConfigKey, configManager} from '@common/config';
 import {Builder} from 'builder-pattern';
 import {TokenExpiredException, TokenGenerationException} from '../security.exception';
+import {ulid} from 'ulid';
 
 @Injectable()
 export class TokenService {
@@ -31,6 +32,7 @@ export class TokenService {
             });
             await this.repository.upsert(
                 Builder<Token>()
+                    .token_id(ulid())
                     .token(token)
                     .refreshToken(refreshToken)
                     .credential(credential)

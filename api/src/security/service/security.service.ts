@@ -32,7 +32,6 @@ export class SecurityService {
     async signIn(payload: SignInPayload,isAdmin:boolean): Promise<Token | null> {
         let result = await this.repository.findOneBy({username: payload.username,
             isAdmin:isAdmin});
-
         if (!isNil(result) && await comparePassword(payload.password, result.password)) {
             return this.tokenService.getTokens(result);
         }
@@ -67,6 +66,7 @@ export class SecurityService {
             payload.username});
         let payloadProfile : ProfileCreatePayload = new ProfileCreatePayload();
         payloadProfile.mail = user.mail;
+        payloadProfile.picture = "image0";
         return this.profileService.create(payloadProfile, user);
     }
 

@@ -27,9 +27,25 @@ export class CommentService {
     return this.api.post(ApiURI.COMMENT, payload).pipe(
       tap((response: ApiResponse) => {
         if (response.result) {
+          console.log(response)
           this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then();
         }
       })
     );
+  }
+
+  getCommentNumber() {
+    return this.api.get(ApiURI.COMMENT_NUMBER).pipe(
+      map((response : ApiResponse)=> {
+        return response.data
+      })
+    )
+  }
+  getLastComment() {
+    return this.api.get(ApiURI.LAST_COMMENT).pipe(
+      map((response : ApiResponse)=> {
+        return response.data
+      })
+    )
   }
 }

@@ -11,7 +11,10 @@
       <button (click)="publish()">Publier</button>
     </div>
     <div *ngFor="let publication of publications">
-      {{ publication.content }}
+      {{ "publication : " + publication.content }}
+      {{getNumberLikesPublication(publication)}}
+      <button (click)="likePublication(publication)">J'aime</button>
+      <button (click)="deletePublication(publication)">Supprimer</button>
       <div class="form" [formGroup]="formGroupComment">
         <input type="myComment" formControlName ='myComment' placeholder="Entrez votre Commentaire" />
         <button (click)="comment(publication)">Commenter</button>
@@ -19,9 +22,23 @@
       <div *ngFor="let comment of comments" class="Commentaire">
         <div *ngIf="comment.publication.publication_id == publication.publication_id">
           {{ comment.content }}
+          {{getNumberLikesComment(comment)}}
+          <button (click)="likeComment(comment)">J'aime</button>
         </div>
       </div>
     </div>
-
+  </div>
+  <div *ngIf=" commentsNumber$ | async as commentsNumber">
+  </div>
+  <div *ngIf=" publicationsNumber$ | async as publicationsNumber">
+  </div>
+  <div *ngIf=" lastComment$ | async as lastcomment">
+    {{"Dernier commentaire  : "+lastcomment.created}}
+  </div>
+  <div *ngIf=" lastPublication$ | async as lastPublication">
+    {{"Dernière publication : "+lastPublication.created}}
+  </div>
+  <div *ngIf=" lastLike$ | async as lastLike">
+    {{"Dernier like : "+lastLike.created}}
   </div>
 </div>

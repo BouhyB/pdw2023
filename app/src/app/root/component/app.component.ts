@@ -11,13 +11,13 @@ import {ApiService} from '@api';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   title = 'app';
   private readonly api: ApiService = inject(ApiService);
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.api.get('').subscribe((data) => {
       console.log('my data', data);
     })
-  }
+  }*/
 
 }

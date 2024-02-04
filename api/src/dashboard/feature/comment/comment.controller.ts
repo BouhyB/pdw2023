@@ -35,5 +35,14 @@ export class CommentController {
     update(@Body() payload: CommentUpdatePayload): Promise<Comment> {
         return this.service.update(payload);
     }
+    @Get('user-comments')
+    public getUserComments(@User() user: Credential){
+        return this.service.getUserComments(user);
+    }
+
+    @Get('last-comment')
+    public getDateLastComment(){
+        return this.service.getDateLastComment();
+    }
 
 }

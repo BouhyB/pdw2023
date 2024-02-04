@@ -21,7 +21,6 @@ export class AuthService {
   signIn(payload: SignInPayload): Observable<ApiResponse> {
     return this.api.post(ApiURI.SIGN_IN, payload).pipe(
       tap((response: ApiResponse) => {
-        //if success then goToDashboard and save token
         if (response.result) {
           this.logOut()
           this.router.navigate([AppNode.REDIRECT_TO_AUTHENTICATED]).then()
@@ -33,10 +32,9 @@ export class AuthService {
   signUp(payload: SignUpPayload): Observable<ApiResponse> {
     return this.api.post(ApiURI.SIGN_UP, payload).pipe(
       tap((response: ApiResponse) => {
-        //if success then goToDashboard and save token
         if (response.result) {
-          this.router.navigate([AppNode.SIGN_IN]).then()
-          this.tokenService.setToken({...response.data, isEmpty: false});
+          this.router.navigate([AppNode.PUBLIC + "/" + AppNode.SIGN_IN]).then()
+          //this.tokenService.setToken({...response.data, isEmpty: false});
         }
       })
     );
@@ -58,10 +56,6 @@ export class AuthService {
       .subscribe();
   }
 
-  getCredentialsId(): string{
-
-    return "null";
-  }
   private handleAuthenticatedChange(token: Token): void {
     if (!token.isEmpty) {
       this.me();

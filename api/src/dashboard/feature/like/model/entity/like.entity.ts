@@ -10,15 +10,15 @@ export class Like extends BaseEntity{
     @PrimaryColumn('varchar', { length:26, default: () => `'${ulid()}'` })
     like_id : string;
 
-    @OneToOne(()=>Credential, {eager:true})
+    @OneToOne(()=>Credential, {eager:true, nullable : false})
     @JoinColumn({name : 'credential_id'})
-    credential_id: string
+    credential: Credential
 
-    @OneToOne(()=>Publication, {eager:true})
+    @OneToOne(()=>Publication, {eager:true , nullable : true})
     @JoinColumn({name : 'publication_id'})
-    publication_id : string
+    publication : Publication
 
-    @OneToOne(()=>Comment, {eager:true})
+    @OneToOne(()=>Comment, {eager:true, nullable : true})
     @JoinColumn({name : 'comment_id'})
-    comment_id : string
+    comment : Comment
 }

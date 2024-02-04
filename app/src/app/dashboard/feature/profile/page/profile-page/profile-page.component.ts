@@ -1,25 +1,26 @@
 import { CommonModule } from '@angular/common';
-import {delay, of, tap} from 'rxjs';
+import {delay, Observable, of, tap} from 'rxjs';
 import {Component, computed, effect, inject, Input, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import {ProfileService} from '../../service/profile.service';
 import {findMember} from '@angular/compiler-cli/src/ngtsc/reflection/src/typescript';
+import {Profile} from '../../data/model/profile.model';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-member-detail-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit{
-  @Input() id!: string;
+export class ProfilePageComponent{
   readonly profileService = inject(ProfileService);
 
-  detail$: Signal<string> = computed(() => this.profileService.List$().find(m => m === this.id) || 'not found');
-  ngOnInit(): void {
-    this.profileService.getDetail();
-  }
+  detail$: Observable<Profile> | undefined = this.profileService.getDetail();
 
+  modifyProfile() {
+    this.profileService.modifyProfile()
+  }
 }
 
 

@@ -6,6 +6,8 @@ import {Like, LikePayload} from '../model';
 import {Publication, PublicationCreatePayload, PublicationUpdatePayload} from '../../publication';
 import {Builder} from 'builder-pattern';
 import {isNil} from 'lodash';
+import {Credential} from '../../../../security/model';
+import {ulid} from 'ulid';
 
 @Injectable()
 export class LikeService{
@@ -13,10 +15,13 @@ export class LikeService{
     constructor(@InjectRepository(Like) private readonly repository: Repository<Like>) {
     }
 
-    async create(payload: LikePayload): Promise<Like> {
+    async create(payload: LikePayload, user : Credential): Promise<Like> {
         try {
             return await this.repository.save(Builder<Like>()
-
+                .like_id(ulid())
+                .credential(user)
+                .publication(payload.publication)
+                .comment(payload.comment)
                 .build()
             );
         } catch (e) {
@@ -38,11 +43,23 @@ export class LikeService{
         }
         //throw new PublicationNotFoundException();
     }
-    async getAll(): Promise<[Like[], number]> {
+    async getAll(): Promise<Like[]> {
         try {
-            return await this.repository.findAndCountBy({});
+            return await this.repository.find();
         } catch (e) {
             //throw new ProfileListException();
         }
     }
+
+    async getDateLastLike() : Promise <Like>{
+        try {
+            return  this.repository.createQueryBuilder("like")
+                .orderBy("like.created", "DESC")
+                .getOne();
+        } catch (e) {
+            //throw new ProfileListException();
+        }
+    }
+
+
 }

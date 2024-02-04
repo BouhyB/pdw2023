@@ -3,9 +3,6 @@ import {IsNotEmpty, IsOptional, Length} from 'class-validator';
 import {Credential} from '../../../../../security/model';
 
 export class ProfileUpdatePayload {
-    @IsNotEmpty()
-    @Length(26, 26)
-    profile_id: string;
     @ApiProperty()
     @IsOptional()
     picture : string;

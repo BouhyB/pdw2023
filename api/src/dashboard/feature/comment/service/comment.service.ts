@@ -1,11 +1,9 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Profile} from '../../profile';
 import {Repository} from 'typeorm';
 import {Comment} from '../model';
-import {Publication, PublicationCreatePayload, PublicationUpdatePayload} from '../../publication';
 import {Builder} from 'builder-pattern';
-import {isNil} from 'lodash';
+import {isNil, orderBy} from 'lodash';
 import {CommentCreatePayload, CommentUpdatePayload} from '../payload';
 import {
     CommentCreateException,
@@ -14,6 +12,7 @@ import {
     CommentNotFoundException, CommentUpdateException
 } from '../../../dashboard.exception';
 import {Credential} from '../../../../security/model';
+import {ulid} from 'ulid';
 
 @Injectable()
 export class CommentService{
@@ -23,6 +22,7 @@ export class CommentService{
     async create(payload: CommentCreatePayload, user: Credential): Promise<Comment> {
         try {
             return await this.repository.save(Builder<Comment>()
+                .comment_id(ulid())
                 .content(payload.content)
                 .credential(user)
                 .publication(payload.publication)
@@ -63,6 +63,28 @@ export class CommentService{
             return await this.repository.save(detail);
         } catch (e) {
             throw new CommentUpdateException();
+        }
+    }
+
+    async getUserComments(user: Credential) : Promise <number>{
+        try {
+            //return await this.repository.countBy({credential : user});
+
+            return this.repository.createQueryBuilder("comment")
+                .where("comment.credential_id = :id", {id : user.credential_id})
+                .getCount()
+        } catch (e) {
+            //throw new ProfileListException();
+        }
+    }
+    async getDateLastComment() : Promise <Comment>{
+        try {
+            //const req = this.repository.
+            return  this.repository.createQueryBuilder("comment")
+                .orderBy("comment.created", "DESC")
+                .getOne();
+        } catch (e) {
+            //throw new ProfileListException();
         }
     }
 }

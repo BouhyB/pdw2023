@@ -21,8 +21,8 @@ export class ApiService {
   put(partURL: string, payload: any): Observable<ApiResponse> {
     return this.handle(this.http.put(`${this.baseURL}${partURL}`, payload));
   }
-  delete(partURL: string): Observable<ApiResponse> {
-    return this.handle(this.http.delete(`${this.baseURL}${partURL}`));
+  delete(partURL: string, id :string): Observable<ApiResponse> {
+    return this.handle(this.http.delete(`${this.baseURL}${partURL}${id}`));
   }
   private handle(obs: Observable<any>): Observable<ApiResponse> {
     return obs.pipe(

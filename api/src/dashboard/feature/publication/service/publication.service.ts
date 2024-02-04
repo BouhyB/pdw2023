@@ -1,5 +1,4 @@
 import {Injectable} from '@nestjs/common';
-import {Comment} from '../../comment';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {Publication, PublicationCreatePayload, PublicationUpdatePayload} from '../model';
@@ -8,9 +7,11 @@ import {isNil} from 'lodash';
 import {
     PublicationCreateException, PublicationDeleteException,
     PublicationListException, PublicationNotFoundException,
-    PublicationUpdateException
+    PublicationUpdateException, PublicationUserCountException
 } from '../../../dashboard.exception';
 import {Credential} from '../../../../security/model';
+import {ulid} from 'ulid';
+import {Comment} from '../../comment';
 
 @Injectable()
 export class PublicationService{
@@ -21,6 +22,7 @@ export class PublicationService{
     async create(payload: PublicationCreatePayload, user: Credential): Promise<Publication> {
         try {
             return await this.repository.save(Builder<Publication>()
+                .publication_id(ulid())
                 .content(payload.content)
                 .type(payload.type)
                 .credential(user)
@@ -48,7 +50,9 @@ export class PublicationService{
     }
     async getAll(): Promise<Publication[]> {
         try {
-            return await this.repository.find();
+            return this.repository.createQueryBuilder("publication")
+                .orderBy("publication.created", "DESC")
+                .getMany()
         } catch (e) {
             throw new PublicationListException();
         }
@@ -62,6 +66,26 @@ export class PublicationService{
             return await this.repository.save(detail);
         } catch (e) {
             throw new PublicationUpdateException();
+        }
+    }
+
+    async getUserPublications(user: Credential) : Promise<number>{
+        try {
+            return this.repository.createQueryBuilder("publication")
+                .where("publication.credential_id = :id", {id : user.credential_id})
+                .getCount()
+        } catch (e) {
+            throw new PublicationUserCountException();
+        }
+    }
+
+    async getDateLastPublication() : Promise <Publication>{
+        try {
+            return  this.repository.createQueryBuilder("publication")
+                .orderBy("publication.created", "DESC")
+                .getOne();
+        } catch (e) {
+            //throw new ProfileListException();
         }
     }
 }

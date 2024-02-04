@@ -1,0 +1,13 @@
+<div class="form" [formGroup]="formGroupUpdate">
+  <label>Ton nom</label>
+  <input type="text" formControlName ='lastname' />
+  <label>Ton prénom</label>
+  <input type="text" formControlName ='firstname' />
+  <label>Ton email</label>
+  <input type="text" formControlName ='mail' />
+  <label>Ta Description</label>
+  <input type="text" formControlName ='description' />
+  <label>Ta photo</label>
+  <input type="text" formControlName ='picture' />
+  <button (click)="update()">Mettre à jour</button>
+</div>

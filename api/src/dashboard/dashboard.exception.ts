@@ -25,6 +25,11 @@ export class PublicationUpdateException extends ApiException {
         super(ApiCodeResponse.USER_NOT_FOUND, 200);
     }
 }
+export class PublicationUserCountException extends ApiException {
+    constructor() {
+        super(ApiCodeResponse.USER_NOT_FOUND, 200);
+    }
+}
 export class ProfileCreateException extends ApiException {
     constructor() {
         super(ApiCodeResponse.USER_NOT_FOUND, 200);

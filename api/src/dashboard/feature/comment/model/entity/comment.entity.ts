@@ -1,11 +1,11 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from 'typeorm';
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn} from 'typeorm';
 import {ulid} from 'ulid';
 import {Credential} from '../../../../../security/model';
 import {Publication} from '../../../publication';
 import {BaseEntity} from '@common/entity/base.entity';
 
 @Entity()
-export class Comment extends BaseEntity{
+export class Comment extends BaseEntity {
     @PrimaryColumn('varchar', { length:26, default: () => `'${ulid()}'` })
     comment_id : string;
 
@@ -16,7 +16,7 @@ export class Comment extends BaseEntity{
     @JoinColumn({name : 'credential_id'})
     credential: Credential
 
-    @ManyToOne(()=>Publication, {eager:true})
+    @ManyToOne(()=>Publication, {eager:true, onDelete:'CASCADE'})
     @JoinColumn({name : 'publication_id'})
     publication : Publication
 
