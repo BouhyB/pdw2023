@@ -1,44 +1,59 @@
 <div *ngIf=" publications$ | async as publications " class="container">
-  <div class="Button-section">
-    <button (click) = "Home()">Home</button>
-    <button (click) = "MyProfile()">Mon profil</button>
-    <button (click) = "LogOut()">Se déconnecter</button>
+  <div class="left-section">
+      <div class="button-section">
+        <h1>Raccourcis</h1>
+        <button >Messages</button>
+        <button >Notifications</button>
+        <button >Amis</button>
+        <button >Paramètres</button>
+        <button (click) = "LogOut()">Se déconnecter</button>
+      </div>
+      <div class="recent-activity">
+        <h1>Activité récente</h1>
+        <div *ngIf=" lastComment$ | async as lastcomment">
+          {{"Commentaire  : "+ lastcomment.created}}
+        </div>
+        <div *ngIf=" lastPublication$ | async as lastPublication">
+          {{"Publication : "+lastPublication.created}}
+        </div>
+        <div *ngIf=" lastLike$ | async as lastLike">
+          {{"Like : "+lastLike.created}}
+        </div>
+    </div>
   </div>
-  <div *ngIf=" comments$ | async as comments" class="Publication">
-    <div class="form" [formGroup]="formGroupPublish">
+  <div *ngIf=" comments$ | async as comments" class="middle-section">
+    <div class="form-publish" [formGroup]="formGroupPublish">
       <label>Contenu</label>
       <input type="myContent" formControlName ='myContent' placeholder="Entrez votre texte" />
       <button (click)="publish()">Publier</button>
     </div>
-    <div *ngFor="let publication of publications">
-      {{ "publication : " + publication.content }}
-      {{getNumberLikesPublication(publication)}}
-      <button (click)="likePublication(publication)">J'aime</button>
-      <button (click)="deletePublication(publication)">Supprimer</button>
-      <div class="form" [formGroup]="formGroupComment">
+    <div *ngFor="let publication of publications" class="publication">
+      <p class="publication-content">{{publication.credential.username + " : "+publication.content}}</p>
+      <div class="publication-like">
+        <button (click)="likePublication(publication)">J'aime</button>
+        <button (click)="deletePublication(publication)">Supprimer</button>
+      </div>
+      <div class="form-comment" [formGroup]="formGroupComment">
         <input type="myComment" formControlName ='myComment' placeholder="Entrez votre Commentaire" />
         <button (click)="comment(publication)">Commenter</button>
       </div>
-      <div *ngFor="let comment of comments" class="Commentaire">
+      <div *ngFor="let comment of comments" class="commentary">
         <div *ngIf="comment.publication.publication_id == publication.publication_id">
+          {{comment.credential.username + " : "}}
           {{ comment.content }}
-          {{getNumberLikesComment(comment)}}
           <button (click)="likeComment(comment)">J'aime</button>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf=" commentsNumber$ | async as commentsNumber">
-  </div>
-  <div *ngIf=" publicationsNumber$ | async as publicationsNumber">
-  </div>
-  <div *ngIf=" lastComment$ | async as lastcomment">
-    {{"Dernier commentaire  : "+lastcomment.created}}
-  </div>
-  <div *ngIf=" lastPublication$ | async as lastPublication">
-    {{"Dernière publication : "+lastPublication.created}}
-  </div>
-  <div *ngIf=" lastLike$ | async as lastLike">
-    {{"Dernier like : "+lastLike.created}}
+  <div class="my-profile">
+    <h1>Ma page</h1>
+    <a (click)="MyProfile()" class="link-profile">Mon profile</a>
+    <div *ngIf=" commentsNumber$ | async as commentsNumber">
+      {{"Nombre de commentaire  : "+commentsNumber.toString()}}
+    </div>
+    <div *ngIf=" publicationsNumber$ | async as publicationsNumber">
+      {{"Nombre de publications  : "+publicationsNumber.toString()}}
+    </div>
   </div>
 </div>

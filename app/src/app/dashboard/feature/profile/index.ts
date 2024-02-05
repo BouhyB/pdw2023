@@ -1,2 +1,3 @@
-export * from './page/index';
-export * from './service/profile.service'
+export * from './page';
+export * from './service/profile.service';
+export * from './data'

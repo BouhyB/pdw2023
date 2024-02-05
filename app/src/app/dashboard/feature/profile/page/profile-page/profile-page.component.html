@@ -1,10 +1,8 @@
-
 <div *ngIf=" detail$ | async as detail " class="container">
   <img src="assets/images/{{detail.picture}}.jpg">
-  Ma description : {{detail.description}}<br>
-  Mon statut : {{detail.status}}<br>
   Mon nom: {{detail.lastname}}<br>
   Mon prenom : {{detail.firstname}}<br>
   Mon email : {{detail.mail}}<br>
+  Ma description : {{detail.description}}<br>
 </div>
 <button (click)="modifyProfile()">Modifier votre profile</button>

@@ -14,11 +14,11 @@ export class Like extends BaseEntity{
     @JoinColumn({name : 'credential_id'})
     credential: Credential
 
-    @OneToOne(()=>Publication, {eager:true , nullable : true})
+    @OneToOne(()=>Publication, {eager:true , nullable : true, onDelete:'CASCADE'})
     @JoinColumn({name : 'publication_id'})
     publication : Publication
 
-    @OneToOne(()=>Comment, {eager:true, nullable : true})
+    @OneToOne(()=>Comment, {eager:true, nullable : true, onDelete:'CASCADE'})
     @JoinColumn({name : 'comment_id'})
     comment : Comment
 }

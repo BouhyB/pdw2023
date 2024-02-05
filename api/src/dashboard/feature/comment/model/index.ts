@@ -1,2 +1,2 @@
-export * from './payload/index'
 export * from './entity/index'
+export * from './payload'

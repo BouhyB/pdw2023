@@ -5,6 +5,7 @@ import {Publication, PublicationCreatePayload, PublicationUpdatePayload} from '.
 import {Builder} from 'builder-pattern';
 import {isNil} from 'lodash';
 import {
+    LastPublicationException,
     PublicationCreateException, PublicationDeleteException,
     PublicationListException, PublicationNotFoundException,
     PublicationUpdateException, PublicationUserCountException
@@ -50,9 +51,11 @@ export class PublicationService{
     }
     async getAll(): Promise<Publication[]> {
         try {
-            return this.repository.createQueryBuilder("publication")
+            return this.repository.find({order : {created : "DESC"}})
+            /*return this.repository.createQueryBuilder("publication")
+                .select("credential_id, content, publication_id, created")
                 .orderBy("publication.created", "DESC")
-                .getMany()
+                .getMany()*/
         } catch (e) {
             throw new PublicationListException();
         }
@@ -85,7 +88,7 @@ export class PublicationService{
                 .orderBy("publication.created", "DESC")
                 .getOne();
         } catch (e) {
-            //throw new ProfileListException();
+            throw new LastPublicationException();
         }
     }
 }

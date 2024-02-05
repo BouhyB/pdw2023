@@ -1,4 +1,4 @@
-import {Base} from '../../../../shared/core/model/base.model';
+import {Base} from '@shared';
 import {Publication} from '../../publication/model/publication.model';
 import {Comment} from '../../comment/model/comment.model';
 

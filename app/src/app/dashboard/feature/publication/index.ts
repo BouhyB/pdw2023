@@ -1,3 +1,4 @@
 export * from './service'
-export * from './payload'
 export * from './model'
+export * from './payload'
+export * from './enum'

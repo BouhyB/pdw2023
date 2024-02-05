@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {SignInPageComponent} from '@security';
 import {ApiService} from '@api';
+import {DashboardService} from '../../dashboard/service/dashboard.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import {ApiService} from '@api';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  private readonly dashboardService: DashboardService = inject(DashboardService);
   title = 'app';
   private readonly api: ApiService = inject(ApiService);
   /*ngOnInit(): void {
@@ -20,4 +22,7 @@ export class AppComponent {
     })
   }*/
 
+  home() {
+    this.dashboardService.home();
+  }
 }

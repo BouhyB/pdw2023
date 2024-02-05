@@ -5,7 +5,7 @@ import {ProfileService} from '../profile';
 import {Publication, PublicationService} from '../publication';
 import {CommentService} from './service';
 import {Comment} from './model';
-import {CommentCreatePayload, CommentUpdatePayload} from './payload';
+import {CommentCreatePayload, CommentUpdatePayload} from './model/payload';
 import {Credential} from '../../../security/model';
 import {User} from '@common/config';
 

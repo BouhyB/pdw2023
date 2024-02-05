@@ -1,11 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {ProfileService} from '@dashboard';
-import {Observable} from 'rxjs';
-import {Profile} from '../../data/model/profile.model';
+import {Profile} from '../../data';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {values} from 'lodash';
-import {ProfilePayload} from '../../data/payload/profile.payload';
+import {ProfilePayload} from '../../data';
 
 @Component({
   selector: 'app-profile-update-page',

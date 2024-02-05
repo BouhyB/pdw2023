@@ -1,4 +1,4 @@
-import {Publication} from '../../../publication/model/publication.model';
+import {Credential} from '@security';
 
 export interface Profile{
   profile_id : string;

@@ -10,7 +10,8 @@
       "@dashboard": ["./app/dashboard/index.ts"],
       "@shared": ["./app/shared/index.ts"],
       "@api": ["./app/shared/api/index.ts"],
-      "@env": ["./environments/index.ts"]
+      "@env": ["./environments/index.ts"],
+      "@feature": ["./app/dashboard/feature/index.ts"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

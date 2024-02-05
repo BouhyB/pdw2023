@@ -1,49 +1,99 @@
-.container {  display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  grid-template-areas:
-    "Button-section Publication ."
-    "Button-section Publication ."
-    ". Publication .";
+.container {
+  display: flex;
+  justify-content: space-around;
 }
 
-.Button-section {  display: grid;
-  grid-auto-columns: 250px;
-  gap: 10px 10px;
-  grid-auto-flow: row;
-  justify-items: center;
-  justify-self: center;
-  align-self: center;
-  grid-area: Button-section;
-  width: 250px;
+.left-section{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 1100px;
+}
+
+.button-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
   height: 500px;
-  background: gray;
+  background: lightblue;
 }
 
-.Publication {  display: grid;
-  grid-auto-columns: 1fr;
-  gap: 0px 0px;
-  grid-auto-flow: row;
-  justify-self: stretch;
-  align-self: stretch;
-  grid-area: Publication;
+.recent-activity{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 500px;
+  background: lightblue;
+}
+
+.middle-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 40px;
+  padding: 10px;
   width: 550px;
-  background: gray;
-  .form{
+  background: lightblue;
+  .form-publish{
     display: flex;
     flex-direction: column;
     gap: 1px;
+    border: 1px solid deepskyblue;
   }
+}
 
+.publication{
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  border: 1px solid deepskyblue;
+}
+
+.publication-content{
+  display: flex;
+  justify-content: center;
+}
+.publication-like{
+  display: flex;
+  justify-content: space-around;
+}
+.form-comment{
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  border: 1px solid cadetblue;
+}
+.commentary{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.my-profile{
+  display: flex;
+  margin-top: 40px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 500px;
+  background: lightblue;
+  .link-profile:hover{
+    background: yellow;
+  }
 }
 
 
 html, body , .container {
+  background: floralwhite;
   height: 100%;
   margin: 0;
 }
 button {
   display: block;
-  margin: 100px;
+  margin: 30px;
 }

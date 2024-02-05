@@ -8,6 +8,12 @@ import {Builder} from 'builder-pattern';
 import {isNil} from 'lodash';
 import {Credential} from '../../../../security/model';
 import {ulid} from 'ulid';
+import {
+    LastLikeException,
+    LikeCreateException,
+    LikeDeleteException,
+    LikeListException, LikeNotFoundException
+} from '../../../dashboard.exception';
 
 @Injectable()
 export class LikeService{
@@ -25,7 +31,7 @@ export class LikeService{
                 .build()
             );
         } catch (e) {
-            //throw new PublicationCreateException();
+            throw new LikeCreateException();
         }
     }
     async delete(id: string): Promise<void> {
@@ -33,7 +39,7 @@ export class LikeService{
             const detail = await this.detail(id);
             await this.repository.remove(detail);
         } catch (e) {
-            //throw new PublicationDeleteException();
+            throw new LikeDeleteException();
         }
     }
     async detail(id: string): Promise<Like> {
@@ -41,13 +47,13 @@ export class LikeService{
         if (!(isNil(result))) {
             return result;
         }
-        //throw new PublicationNotFoundException();
+        throw new LikeNotFoundException();
     }
     async getAll(): Promise<Like[]> {
         try {
             return await this.repository.find();
         } catch (e) {
-            //throw new ProfileListException();
+            throw new LikeListException();
         }
     }
 
@@ -57,7 +63,7 @@ export class LikeService{
                 .orderBy("like.created", "DESC")
                 .getOne();
         } catch (e) {
-            //throw new ProfileListException();
+            throw new LastLikeException();
         }
     }
 

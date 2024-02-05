@@ -1,20 +1,31 @@
-import {Component, computed, inject, OnInit, signal, Signal, WritableSignal} from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnChanges,
+  OnInit,
+  signal,
+  Signal,
+  SimpleChanges,
+  WritableSignal
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DashboardService} from '../../../service/dashboard.service';
 import {AuthService} from '@security';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {PublicationService} from '../../../feature/publication/service/publication.service';
-import {PublicationPayload} from '../../../feature/publication/payload/publication.payload';
-import {TypePublicationEnum} from '../../../feature/publication/enum/type-publication.enum';
-import {Observable} from 'rxjs';
-import {CommentService} from '../../../feature/comment/service/comment.service';
-import {Publication} from '../../../feature/publication/model/publication.model';
-import {Comment} from '../../../feature/comment/model/comment.model';
-import {CommentPayload} from '../../../feature/comment/payload/comment.payload';
-import {LikePayload} from '../../../feature/like/payload/like.payload';
-import {LikeService} from '../../../feature/like/service/like.service';
-import {Profile} from '../../../feature/profile/data/model/profile.model';
-import {Like} from '../../../feature/like/model/like.model';
+import {BehaviorSubject, Observable, switchMap, tap} from 'rxjs';
+import {ApiResponse} from '@api';
+import {
+  Comment,
+  CommentPayload,
+  CommentService,
+  Like, LikePayload,
+  LikeService,
+  Publication,
+  PublicationPayload,
+  PublicationService,
+  TypePublicationEnum
+} from '@feature';
 
 @Component({
   selector: 'app-dashboard-home-page',
@@ -23,7 +34,7 @@ import {Like} from '../../../feature/like/model/like.model';
   templateUrl: './dashboard-home-page.component.html',
   styleUrls: ['./dashboard-home-page.component.scss']
 })
-export class DashboardHomePageComponent {
+export class DashboardHomePageComponent implements OnInit{
 
   private readonly dashboardService: DashboardService = inject(DashboardService);
   private readonly authService: AuthService = inject(AuthService);
@@ -31,16 +42,34 @@ export class DashboardHomePageComponent {
   private readonly commentService : CommentService = inject(CommentService);
   private readonly likeService : LikeService = inject(LikeService);
 
-  publications$: Observable<Publication[]> | undefined = this.publicationService.getPublications();
-  comments$ : Observable<Comment[]> | undefined = this.commentService.getCommentsForAPublication();
 
-  commentsNumber$ : Observable<number> | undefined = this.commentService.getCommentNumber();
-  publicationsNumber$ : Observable<number> | undefined = this.publicationService.getPublicationNumber();
+  publicationsSubject = new BehaviorSubject<Publication[]>([]);
+  //publications$: Observable<Publication[]> = this.publicationService.getPublications();
+  publications$: Observable<Publication[]> = this.publicationsSubject.asObservable();
 
-  lastComment$ : Observable<Comment> | undefined = this.commentService.getLastComment();
-  lastPublication$ : Observable<Publication> | undefined = this.publicationService.getLastPublication();
-  lastLike$ : Observable<Like> | undefined = this.likeService.getLastLike();
+  commentSubject = new BehaviorSubject<Comment[]>([]);
+  //comments$ : Observable<Comment[]> = this.commentService.getCommentsForAPublication();
+  comments$ : Observable<Comment[]> = this.commentSubject.asObservable();
 
+  commentNumberSubject = new BehaviorSubject<number>(0);
+  //commentsNumber$ : Observable<number> = this.commentService.getCommentNumber();
+  commentsNumber$ : Observable<number> = this.commentNumberSubject.asObservable();
+
+  publicationNumberSubject = new BehaviorSubject<number>(0);
+  //publicationsNumber$ : Observable<number> = this.publicationService.getPublicationNumber();
+  publicationsNumber$ : Observable<number> = this.publicationNumberSubject.asObservable();
+
+
+  lastComment$ : Observable<Comment> = this.commentService.getLastComment();
+  lastPublication$ : Observable<Publication> = this.publicationService.getLastPublication();
+  lastLike$ : Observable<Like> = this.likeService.getLastLike();
+
+  ngOnInit() {
+    this.publicationService.getPublications().subscribe((value : any) => this.publicationsSubject.next([...value]));
+    this.commentService.getCommentsForAPublication().subscribe((value : any) => this.commentSubject.next([...value]));
+    this.publicationService.getPublicationNumber().subscribe((value : any) => this.publicationNumberSubject.next(value));
+    this.commentService.getCommentNumber().subscribe((value : any) => this.commentNumberSubject.next(value));
+  }
 
   public formGroupPublish: FormGroup = new FormGroup<any>({
       myContent : new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(200)])
@@ -55,10 +84,14 @@ export class DashboardHomePageComponent {
   publish():void{
     const payload : PublicationPayload = { content:this.formGroupPublish.value.myContent, type: TypePublicationEnum.TEXT }
     if (this.formGroupPublish.valid) {
-      this.publicationService.publish(payload).subscribe();
+      this.publicationService.publish(payload).pipe(tap((response: ApiResponse) => {
+        const currentPublications = this.publicationsSubject.value;
+        this.publicationsSubject.next([response.data, ...currentPublications]);
+        this.publicationService.getPublicationNumber().subscribe((value : any) => this.publicationNumberSubject.next(value));
+      })).subscribe();
     } else {
       if (payload.content.length == 0) {
-        alert('Content vide')
+        alert('Publication vide');
       }
     }
   }
@@ -66,7 +99,15 @@ export class DashboardHomePageComponent {
   comment(publication : Publication){
     const payload : CommentPayload = {content : this.formGroupComment.value.myComment, publication : publication}
     if(this.formGroupComment.valid){
-      this.commentService.comment(payload).subscribe();
+      this.commentService.comment(payload).pipe(tap((response: ApiResponse) => {
+        const currentComments = this.commentSubject.value;
+        this.commentSubject.next([response.data, ...currentComments]);
+        this.commentService.getCommentNumber().subscribe((value : any) => this.commentNumberSubject.next(value));
+      })).subscribe();
+    } else {
+      if (payload.content.length == 0) {
+        alert('Commentaire vide');
+      }
     }
   }
 
@@ -83,7 +124,12 @@ export class DashboardHomePageComponent {
   }
 
   deletePublication(publication : Publication){
-    this.publicationService.delete(publication.publication_id).subscribe();
+    this.publicationService.delete(publication.publication_id).pipe(tap((response: ApiResponse) => {
+      const currentPublications = this.publicationsSubject.value;
+      this.publicationsSubject.next(this.publicationService.getPublications().subscribe((value : any) => this.publicationsSubject.next([...value])));
+      this.publicationService.getPublicationNumber().subscribe((value : any) => this.publicationNumberSubject.next(value));
+      this.commentService.getCommentNumber().subscribe((value : any) => this.commentNumberSubject.next(value));
+    })).subscribe();
   }
 
   getNumberLikesPublication(publication: Publication) : number {
@@ -93,11 +139,6 @@ export class DashboardHomePageComponent {
 
   getNumberLikesComment(comment: Comment) : number {
     return 0;
-  }
-
-
-  Home() {
-    this.dashboardService.home()
   }
 
   MyProfile() {

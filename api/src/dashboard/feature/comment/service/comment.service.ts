@@ -4,12 +4,12 @@ import {Repository} from 'typeorm';
 import {Comment} from '../model';
 import {Builder} from 'builder-pattern';
 import {isNil, orderBy} from 'lodash';
-import {CommentCreatePayload, CommentUpdatePayload} from '../payload';
+import {CommentCreatePayload, CommentUpdatePayload} from '../model/payload';
 import {
     CommentCreateException,
     CommentDeleteException,
     CommentListException,
-    CommentNotFoundException, CommentUpdateException
+    CommentNotFoundException, CommentUpdateException, LastCommentException, UserCommentsException
 } from '../../../dashboard.exception';
 import {Credential} from '../../../../security/model';
 import {ulid} from 'ulid';
@@ -74,7 +74,7 @@ export class CommentService{
                 .where("comment.credential_id = :id", {id : user.credential_id})
                 .getCount()
         } catch (e) {
-            //throw new ProfileListException();
+            throw new UserCommentsException();
         }
     }
     async getDateLastComment() : Promise <Comment>{
@@ -84,7 +84,7 @@ export class CommentService{
                 .orderBy("comment.created", "DESC")
                 .getOne();
         } catch (e) {
-            //throw new ProfileListException();
+            throw new LastCommentException();
         }
     }
 }

@@ -4,6 +4,7 @@ import {map, Observable, tap} from 'rxjs';
 import {ApiResponse, ApiService, ApiURI} from '@api';
 import {AppNode} from '@shared';
 import {Router} from '@angular/router';
+import {Publication} from '../model/publication.model';
 
 @Injectable({
   providedIn: 'root'
